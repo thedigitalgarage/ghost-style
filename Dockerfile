@@ -13,4 +13,4 @@ ENV NODE_ENV development
 
 # Port 2368 for ghost server
 EXPOSE 2368
-CMD ["/entrypoint.sh npm run"]
+CMD /entrypoint.sh npm start
