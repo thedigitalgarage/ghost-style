@@ -7,6 +7,7 @@ WORKDIR /usr/src/ghost
 # Add manually css resources
 ADD screen.css /usr/src/ghost/content/themes/casper/assets/css/screen.css
 ADD ghost.css /usr/src/ghost/core/built/assets/ghost.css
+ADD post.hbs /usr/src/ghost/content/themes/casper/post.hbs
 
 # currently only works for development
 ENV NODE_ENV development
