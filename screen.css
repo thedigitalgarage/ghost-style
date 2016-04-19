@@ -227,26 +227,22 @@ td, th {
     padding: 10px 15px;
 }
 
-/*fyre*/
-#fyre-editor-3 {
+.fyre-editor .fyre-editor-container .fyre-editor-editable.editable {
     background-color: white !important;
+    border: 1px solid #dde6e9;
+    border-radius: 4px;
+    webkit-box-shadow: none;
+    box-shadow: none;
+}
+
+.fyre-editor:focus, .fyre-editor-container:focus, .fyre-editor-editable.editable:focus {
+    border-color: #66afe9 !important;
 }
 
 @media all {
 
     .fyre-editor-toolbar {
         background-color: transparent !important;
-    }
-
-    #fyre-editor-3 {
-        border: 1px solid #dde6e9;
-        border-radius: 4px;
-        webkit-box-shadow: none;
-        box-shadow: none;
-    }
-
-    #fyre-editor-3:focus {
-        border-color: #66afe9;
     }
 
     .fyre-editor .fyre-editor-toolbar .goog-toolbar > div {
@@ -256,34 +252,18 @@ td, th {
     }
 
     .fyre-editor .fyre-editor-toolbar .goog-toolbar > div {
-
         border-right: none;
     }
 
-    #\:d, #\:l, #\:n, #\:r, #\:t, #\:v {
+    /*buttons*/
+    .fyre-format-button, .fyre-mention-button, .fyre-embed-button, .fyre-follow-button, .fyre-share-button, .fyre-post-button {
         border-bottom: none !important;
         border-left: none !important;
         border-right: none !important;
         background-color: transparent !important;
     }
 
-    #\:l:hover {
-        background-color: #ededed !important;
-    }
-
-    #\:n:hover {
-        background-color: #ededed !important;
-    }
-
-    #\:r:hover {
-        background-color: #ededed !important;
-    }
-
-    #\:t:hover {
-        background-color: #ededed !important;
-    }
-
-    #\:v:hover {
+    .fyre-button-left-outer-box:hover, .fyre-button-right-inner-box:hover {
         background-color: #ededed !important;
     }
 
@@ -339,9 +319,18 @@ td, th {
         border-bottom: none !important;
     }
 
-    .no-cover .main-nav.overlay{
+    .no-cover .main-nav.overlay {
         box-shadow: none;
     }
+
+    #livefyre-comments: {
+        margin-bottom: 110px;
+    }
+
+    main {
+        overflow: visible;
+    }
+
 }
 
 /* ==========================================================================
