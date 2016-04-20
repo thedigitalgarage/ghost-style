@@ -20,10 +20,10 @@ config = {
         database: {
             client: 'mysql',
             connection: {
-                host     : process.env.MYSQL_HOST,
-                user     : 'ghost',
-                password : 'ghost',
-                database : 'ghost',
+                host     : process.env.MYSQL_SERVICE_HOST,
+                user     : process.env.MYSQL_USER,
+                password : process.env.MYSQL_PASSWORD,
+                database : process.env.MYSQL_DATABASE_NAME,
                 charset  : 'utf8'
             }
         },

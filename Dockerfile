@@ -1,4 +1,4 @@
-FROM aronzanon/ghostlivefyre
+FROM ptimof/ghost
 
 MAINTAINER Bixlabs, lclavijo@bixlabs.com
 
