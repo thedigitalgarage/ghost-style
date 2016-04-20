@@ -122,7 +122,7 @@
                 "env": [
                   {
                     "name": "GHOST_URL",
-                    "value": "{{APPLICATION_DOMAIN}}"
+                    "value": "${APPLICATION_DOMAIN}"
                   },
                   {
                     "name": "MYSQL_USER",
@@ -207,11 +207,12 @@
         "loadBalancer": {}
       }
     },
+
     {
       "kind": "Service",
       "apiVersion": "v1",
       "metadata": {
-        "name": "${DATABASE_SERVICE_NAME}-mysql",
+        "name": "${DATABASE_SERVICE_NAME}",
         "creationTimestamp": null
       },
       "spec": {
@@ -225,7 +226,7 @@
           }
         ],
         "selector": {
-          "name": "${DATABASE_SERVICE_NAME}-mysql"
+          "name": "${DATABASE_SERVICE_NAME}"
         },
         "portalIP": "",
         "type": "ClusterIP",
@@ -236,27 +237,10 @@
       }
     },
     {
-      "kind": "PersistentVolumeClaim",
-      "apiVersion": "v1",
-      "metadata": {
-        "name": "${DATABASE_SERVICE_NAME}-mysql"
-      },
-      "spec": {
-        "accessModes": [
-          "ReadWriteOnce"
-        ],
-        "resources": {
-          "requests": {
-            "storage": "${VOLUME_CAPACITY}"
-          }
-        }
-      }
-    },
-    {
       "kind": "DeploymentConfig",
       "apiVersion": "v1",
       "metadata": {
-        "name": "${DATABASE_SERVICE_NAME}-mysql",
+        "name": "${DATABASE_SERVICE_NAME}",
         "creationTimestamp": null
       },
       "spec": {
@@ -267,7 +251,7 @@
           {
             "type": "ImageChange",
             "imageChangeParams": {
-              "automatic": true,
+              "automatic": false,
               "containerNames": [
                 "mysql"
               ],
@@ -285,13 +269,13 @@
         ],
         "replicas": 1,
         "selector": {
-          "name": "${DATABASE_SERVICE_NAME}-mysql"
+          "name": "${DATABASE_SERVICE_NAME}"
         },
         "template": {
           "metadata": {
             "creationTimestamp": null,
             "labels": {
-              "name": "${DATABASE_SERVICE_NAME}-mysql"
+              "name": "${DATABASE_SERVICE_NAME}"
             }
           },
           "spec": {
@@ -309,12 +293,8 @@
                   "timeoutSeconds": 1,
                   "initialDelaySeconds": 5,
                   "exec": {
-                    "command": [
-                      "/bin/sh",
-                      "-i",
-                      "-c",
-                      "MYSQL_PWD=\"$MYSQL_PASSWORD\" mysql -h 127.0.0.1 -u $MYSQL_USER -D $MYSQL_DATABASE -e 'SELECT 1'"
-                    ]
+                    "command": [ "/bin/sh", "-i", "-c",
+                      "MYSQL_PWD=\"$MYSQL_PASSWORD\" mysql -h 127.0.0.1 -u $MYSQL_USER -D $MYSQL_DATABASE -e 'SELECT 1'"]
                   }
                 },
                 "livenessProbe": {
@@ -345,7 +325,7 @@
                 },
                 "volumeMounts": [
                   {
-                    "name": "${DATABASE_SERVICE_NAME}-mysql-data",
+                    "name": "${DATABASE_SERVICE_NAME}-data",
                     "mountPath": "/var/lib/mysql/data"
                   }
                 ],
@@ -360,9 +340,9 @@
             ],
             "volumes": [
               {
-                "name": "${DATABASE_SERVICE_NAME}-mysql-data",
-                "persistentVolumeClaim": {
-                  "claimName": "${DATABASE_SERVICE_NAME}-mysql"
+                "name": "${DATABASE_SERVICE_NAME}-data",
+                "emptyDir": {
+                  "medium": ""
                 }
               }
             ],
