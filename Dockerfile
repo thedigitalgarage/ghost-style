@@ -2,13 +2,15 @@ FROM ptimof/ghost
 
 MAINTAINER Bixlabs, lclavijo@bixlabs.com
 
-WORKDIR /usr/src/ghost
+ENV DIR /usr/src/ghost
+WORKDIR $DIR
 
 # Add manually css resources
 ADD screen.css /usr/src/ghost/content/themes/casper/assets/css/screen.css
 ADD ghost.css /usr/src/ghost/core/built/assets/ghost.css
 ADD post.hbs /usr/src/ghost/content/themes/casper/post.hbs
-ADD config.example.js /usr/src/ghost/config.example.js
+#ADD config.example.js /usr/src/ghost/config.example.js
+ADD entrypoint.sh /entrypoint.sh
 
 # currently only works for development
 ENV NODE_ENV development
