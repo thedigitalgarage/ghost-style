@@ -366,6 +366,14 @@
       "name": "APPLICATION_DOMAIN",
       "displayName": "Application Hostname",
       "description": "The exposed hostname that will route to the Ghost service, if left blank a value will be defaulted.",
+      "required": true,
+      "value": ""
+    },
+    {
+      "name": "LIVEFYRE_SITEID",
+      "displayName": "Application LiveFyre Site Identifier",
+      "description": "LiveFyre site Identifier must be provided",
+      "required": true,
       "value": ""
     },
     {
