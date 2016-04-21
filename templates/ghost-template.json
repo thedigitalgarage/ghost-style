@@ -84,7 +84,7 @@
             }
           }
         ],
-        "replicas": 0,
+        "replicas": 1,
         "test": false,
         "selector": {
           "app": "${NAME}",
@@ -98,7 +98,7 @@
               "deploymentconfig": "${NAME}"
             },
             "annotations": {
-              "openshift.io/container.digitalghost.image.entrypoint": "[\"/entrypoint.sh\",\"/bin/sh\",\"-c\",\"/entrypoint.sh npm start\"]",
+              "openshift.io/container.ghost.image.entrypoint": "[\"/entrypoint.sh\",\"/bin/sh\",\"-c\",\"/entrypoint.sh npm start\"]",
               "openshift.io/generated-by": "OpenShiftNewApp"
             }
           },
@@ -111,7 +111,7 @@
             ],
             "containers": [
               {
-                "name": "${NAME}",
+                "name": "ghost",
                 "image": "leokraken/digitalghost:latest",
                 "ports": [
                   {
@@ -164,7 +164,7 @@
         "name": "${NAME}"
       },
       "spec": {
-        "host": "${APPLICATION_DOMAIN}",
+        "host": "",
         "to": {
           "kind": "Service",
           "name": "${NAME}"
@@ -352,7 +352,102 @@
         }
       },
       "status": {}
+    },
+
+    {
+      "kind": "ReplicationController",
+      "apiVersion": "v1",
+      "metadata": {
+        "name": "${NAME}-1",
+        "generation": 1,
+        "creationTimestamp": null,
+        "labels": {
+          "app": "${NAME}",
+          "openshift.io/deployment-config.name": "${NAME}"
+        },
+        "annotations": {
+          "openshift.io/deployer-pod.name": "ghost-1-deploy",
+          "openshift.io/deployment-config.latest-version": "1",
+          "openshift.io/deployment-config.name": "${NAME}",
+          "openshift.io/deployment.phase": "Complete",
+          "openshift.io/deployment.replicas": "1"
+        }
+      },
+      "spec": {
+        "replicas": 1,
+        "selector": {
+          "app": "${NAME}",
+          "deployment": "${NAME}-1",
+          "deploymentconfig": "${NAME}"
+        },
+        "template": {
+          "metadata": {
+            "creationTimestamp": null,
+            "labels": {
+              "app": "${NAME}",
+              "deployment": "${NAME}-1",
+              "deploymentconfig": "${NAME}"
+            },
+            "annotations": {
+              "openshift.io/container.ghost.image.entrypoint": "[\"/entrypoint.sh\",\"/bin/sh\",\"-c\",\"/entrypoint.sh npm start\"]",
+              "openshift.io/deployment-config.latest-version": "1",
+              "openshift.io/deployment-config.name": "${NAME}",
+              "openshift.io/deployment.name": "${NAME}-1",
+              "openshift.io/generated-by": "OpenShiftNewApp"
+            }
+          },
+          "spec": {
+            "volumes": [
+              {
+                "name": "${NAME}-volume-1",
+                "emptyDir": {}
+              }
+            ],
+            "containers": [
+              {
+                "name": "${NAME}",
+                "image": "leokraken/digitalghost:latest",
+                "ports": [
+                  {
+                    "containerPort": 2368,
+                    "protocol": "TCP"
+                  }
+                ],
+                "env": [
+                  {
+                    "name": "GHOST_URL",
+                    "value": "${APPLICATION_DOMAIN}"
+                  },
+                  {
+                    "name": "MYSQL_USER",
+                    "value": "${MYSQL_USER}"
+                  },
+                  {
+                    "name": "MYSQL_PASSWORD",
+                    "value": "${MYSQL_PASSWORD}"
+                  },
+                  {
+                    "name": "MYSQL_DATABASE",
+                    "value": "${MYSQL_DATABASE}"
+                  }
+                ],
+                "resources": {},
+                "terminationMessagePath": "/dev/termination-log",
+                "imagePullPolicy": "Always"
+              }
+            ],
+            "restartPolicy": "Always",
+            "terminationGracePeriodSeconds": 30,
+            "dnsPolicy": "ClusterFirst",
+            "securityContext": {}
+          }
+        }
+      },
+      "status": {
+        "replicas": 0
+      }
     }
+
   ],
   "parameters": [
     {
@@ -400,6 +495,7 @@
       "displayName": "MySQL User",
       "description": "Username for MySQL user that will be used for accessing the database.",
       "generate": "expression",
+      "value": "ghost",
       "from": "user[A-Z0-9]{3}",
       "required": true
     },
@@ -409,15 +505,15 @@
       "description": "Password for the MySQL user.",
       "generate": "expression",
       "from": "[a-zA-Z0-9]{16}",
+      "value": "ghost",
       "required": true
     },
     {
       "name": "MYSQL_DATABASE",
       "displayName": "MySQL Database Name",
       "description": "Name of the MySQL database accessed.",
-      "value": "sampledb",
+      "value": "ghost",
       "required": true
     }
   ]
 }
-
