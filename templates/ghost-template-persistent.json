@@ -212,7 +212,7 @@
       }
     },
 
-    {
+   {
       "kind": "Service",
       "apiVersion": "v1",
       "metadata": {
@@ -241,6 +241,23 @@
       }
     },
     {
+      "kind": "PersistentVolumeClaim",
+      "apiVersion": "v1",
+      "metadata": {
+        "name": "${DATABASE_SERVICE_NAME}"
+      },
+      "spec": {
+        "accessModes": [
+          "ReadWriteOnce"
+        ],
+        "resources": {
+          "requests": {
+            "storage": "${VOLUME_CAPACITY}"
+          }
+        }
+      }
+    },
+    {
       "kind": "DeploymentConfig",
       "apiVersion": "v1",
       "metadata": {
@@ -255,7 +272,7 @@
           {
             "type": "ImageChange",
             "imageChangeParams": {
-              "automatic": false,
+              "automatic": true,
               "containerNames": [
                 "mysql"
               ],
@@ -345,8 +362,8 @@
             "volumes": [
               {
                 "name": "${DATABASE_SERVICE_NAME}-data",
-                "emptyDir": {
-                  "medium": ""
+                "persistentVolumeClaim": {
+                  "claimName": "${DATABASE_SERVICE_NAME}"
                 }
               }
             ],
@@ -421,10 +438,6 @@
                   {
                     "name": "GHOST_URL",
                     "value": "${APPLICATION_DOMAIN}"
-                  },
-                  {
-                    "name": "LIVEFYRE_SITEID",
-                    "value": "${LIVEFYRE_SITEID}"
                   },
                   {
                     "name": "MYSQL_USER",
