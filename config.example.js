@@ -12,9 +12,13 @@ config = {
         url: process.env.GHOST_URL,
         mail: {
             transport: 'SMTP',
-            options: {
-                host: process.env.MAIL_HOST
-            },
+	    options: {
+		service: 'Gmail',
+		auth: {
+		    user: process.env.GHOST_MAIL_ACCOUNT,
+		    pass: process.env.GHOST_MAIL_AUTH
+		}
+	    },
             from: process.env.MAIL_FROM
         },
         database: {
@@ -76,18 +80,29 @@ config = {
     // Used when developing Ghost to run tests and check the health of Ghost
     // Uses a different port number
     testing: {
-        url: 'http://127.0.0.1:2369',
+        url: 'http://127.0.0.1:2368',
         database: {
             client: 'sqlite3',
             connection: {
                 filename: path.join(__dirname, '/content/data/ghost-test.db')
             }
         },
+        mail: {
+            transport: 'SMTP',
+	    options: {
+		service: 'Gmail',
+		auth: {
+		    user: process.env.GHOST_MAIL_ACCOUNT,
+		    pass: process.env.GHOST_MAIL_AUTH
+		}
+	    },
+            from: process.env.MAIL_FROM
+        },
         server: {
             host: '127.0.0.1',
-            port: '2369'
+            port: '2368'
         },
-        logging: false
+        logging: true
     },
 
     // ### Travis
